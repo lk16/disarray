@@ -4,7 +4,10 @@ This module exports one function with one task:
 
 to parse JSON messages that have an array as root into a golang struct.
 
-Especially those with different types as fields. This gets particularly hairy for complex JSON structures.
+Especially those with different types in the array. This gets particularly hairy for complex JSON structures.
+
+I implemented this (hacky) module, because the standard library doesn't support this.
+
 
 ### Example
 
@@ -18,9 +21,9 @@ import (
 )
 
 type foo struct {
-	Zero string  `json:"offset_zero"`
-	One  float64 `json:"offset_one"`
-	Two  string  `json:"offset_two"`
+	Zero string  `json:"0"`
+	One  float64 `json:"1"`
+	Two  string  `json:"2"`
 }
 
 func main() {

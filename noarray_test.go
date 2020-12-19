@@ -8,9 +8,9 @@ import (
 )
 
 type foo struct {
-	Zero string  `json:"offset_zero"`
-	One  float64 `json:"offset_one"`
-	Two  string  `json:"offset_two"`
+	Zero string  `json:"0"`
+	One  float64 `json:"1"`
+	Two  string  `json:"2"`
 }
 
 func TestNoArraySimple(t *testing.T) {
@@ -38,7 +38,7 @@ func TestNoArraySimple(t *testing.T) {
 			name:           "wrongFieldType",
 			input:          []byte(`["foo","baz","bar"]`),
 			expectedOutput: foo{Zero: "foo", Two: "bar"},
-			expectedErr:    errors.New("json: cannot unmarshal string into Go struct field foo.offset_one of type float64"),
+			expectedErr:    errors.New("json: cannot unmarshal string into Go struct field foo.1 of type float64"),
 		},
 		{
 			name:           "brokenJSON",
@@ -58,11 +58,6 @@ func TestNoArraySimple(t *testing.T) {
 			expectedOutput: foo{Zero: "foo", One: 123.4, Two: "bar"},
 			expectedErr:    nil,
 		},
-		{
-			name:           "arrayTooLong",
-			input:          []byte(`["foo",123.4,"bar",1,1,1,1,1,1,1,1,1,1]`),
-			expectedOutput: foo{},
-			expectedErr:    ErrArrayTooLong},
 	}
 
 	for _, testCase := range testCases {
@@ -86,11 +81,11 @@ type baz struct {
 }
 
 type bar struct {
-	Zero  string         `json:"offset_zero"`
-	One   []baz          `json:"offset_one"`
-	Two   string         `json:"offset_two"`
-	Three map[string]baz `json:"offset_three"`
-	Four  float64        `json:"offset_four"`
+	Zero  string         `json:"0"`
+	One   []baz          `json:"1"`
+	Two   string         `json:"2"`
+	Three map[string]baz `json:"3"`
+	Four  float64        `json:"4"`
 }
 
 func TestNoArrayAdvanced(t *testing.T) {
@@ -103,7 +98,7 @@ func TestNoArrayAdvanced(t *testing.T) {
 
 	testCases := []testCase{
 		{
-			name:  "baseCase",
+			name:  "advanced",
 			input: []byte(`["something",[{"key": "value"}, {"key": "othervalue"}], "two", {"asdf": {"key": "somevalue"}}]`),
 			expectedOutput: bar{
 				Zero: "something",
@@ -119,7 +114,7 @@ func TestNoArrayAdvanced(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:  "baseCase",
+			name:  "empty",
 			input: []byte(`["",[], "", {}]`),
 			expectedOutput: bar{
 				One:   []baz{},
