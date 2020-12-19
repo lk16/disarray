@@ -37,8 +37,8 @@ func TestNoArraySimple(t *testing.T) {
 		{
 			name:           "wrongFieldType",
 			input:          []byte(`["foo","baz","bar"]`),
-			expectedOutput: foo{Zero: "foo", Two: "bar"},
-			expectedErr:    errors.New("json: cannot unmarshal string into Go struct field foo.1 of type float64"),
+			expectedOutput: foo{Zero: "foo"},
+			expectedErr:    errors.New("json: cannot unmarshal string into Go value of type float64"),
 		},
 		{
 			name:           "brokenJSON",
@@ -138,4 +138,18 @@ func TestNoArrayAdvanced(t *testing.T) {
 			assert.Equal(t, testCase.expectedOutput, output)
 		})
 	}
+}
+
+func TestBrokenTag(t *testing.T) {
+
+	type brokenTag struct {
+		Field string `json:"noNumberHere"`
+	}
+
+	bytes := []byte(`["value"]`)
+
+	var broken brokenTag
+	err := UnmarshalAsObject(bytes, &broken)
+
+	assert.Equal(t, err.Error(), `strconv.Atoi: parsing "noNumberHere": invalid syntax`)
 }

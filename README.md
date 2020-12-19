@@ -37,6 +37,6 @@ func main() {
     }
 
     // prints: output = foo{Zero: "foo", One: 123.4, Two: "bar"}
-    fmt.Printf("output = %+#v", output)
+    fmt.Printf("output = %+#v\n", output)
 }
 ```
