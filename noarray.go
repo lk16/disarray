@@ -29,7 +29,11 @@ func UnmarshalAsObject(data []byte, v interface{}) error {
 	x := reflect.Indirect(reflect.ValueOf(v))
 
 	for i := 0; i < x.NumField(); i++ {
-		jsonTag := x.Type().Field(i).Tag.Get("json")
+		jsonTag, ok := x.Type().Field(i).Tag.Lookup("json")
+		if !ok {
+			continue
+		}
+
 		jsonField := strings.SplitN(jsonTag, ",", 2)[0]
 
 		var sliceIndex int
@@ -42,10 +46,10 @@ func UnmarshalAsObject(data []byte, v interface{}) error {
 			continue
 		}
 
-		if err = json.Unmarshal(rawMessages[i], x.Field(i).Addr().Interface()); err != nil {
+		unmarshalTarget := x.Field(i).Addr().Interface()
+		if err = json.Unmarshal(rawMessages[i], unmarshalTarget); err != nil {
 			return err
 		}
-
 	}
 	return nil
 }

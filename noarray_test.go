@@ -153,3 +153,18 @@ func TestBrokenTag(t *testing.T) {
 
 	assert.Equal(t, err.Error(), `strconv.Atoi: parsing "noNumberHere": invalid syntax`)
 }
+
+func TestOtherTag(t *testing.T) {
+
+	type otherTag struct {
+		Field string `xml:"noNumberHere"`
+	}
+
+	bytes := []byte(`["value"]`)
+
+	var out otherTag
+	err := UnmarshalAsObject(bytes, &out)
+
+	assert.Nil(t, err)
+	assert.Equal(t, otherTag{}, out)
+}
