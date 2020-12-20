@@ -2,6 +2,8 @@
 
 Unmarshal JSON arrays into a struct.
 
+[Documentation](https://pkg.go.dev/github.com/lk16/disarray)
+
 ### Why?
 * The Standard library doesn't support this
 * Writing a custom `UnmarshalJSON()` for every array of some APIs object got tedious
@@ -26,8 +28,8 @@ func main() {
 	bytes := []byte(`["foo",123.4,"bar"]`)
 
 	var foo foo
-    err := json.Unmarshal(bytes, &foo)
-    // ...
+	err := json.Unmarshal(bytes, &foo)
+	// ...
 }
 ```
 
