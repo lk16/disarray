@@ -15,21 +15,21 @@ Full example is [here](example/main.go).
 
 ```go
 type foo struct {
-	Zero string  `json:"0"`
-	One  float64 `json:"1"`
-	Two  string  `json:"2"`
+    Zero string  `json:"0"`
+    One  float64 `json:"1"`
+    Two  string  `json:"2"`
 }
 
 func (foo *foo) UnmarshalJSON(bytes []byte) error {
-	return disarray.UnmarshalAsObject(bytes, foo)
+    return disarray.UnmarshalAsObject(bytes, foo)
 }
 
 func main() {
-	bytes := []byte(`["foo",123.4,"bar"]`)
+    bytes := []byte(`["foo",123.4,"bar"]`)
 
-	var foo foo
-	err := json.Unmarshal(bytes, &foo)
-	// ...
+    var foo foo
+    err := json.Unmarshal(bytes, &foo)
+    // ...
 }
 ```
 
