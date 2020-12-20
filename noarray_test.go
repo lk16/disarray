@@ -50,7 +50,7 @@ func TestNoArraySimple(t *testing.T) {
 			name:           "notASlice",
 			input:          []byte(`{}`),
 			expectedOutput: foo{},
-			expectedErr:    errors.New("json: cannot unmarshal object into Go value of type []interface {}"),
+			expectedErr:    errors.New("json: cannot unmarshal object into Go value of type []json.RawMessage"),
 		},
 		{
 			name:           "extraSliceValues",

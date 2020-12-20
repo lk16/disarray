@@ -2,7 +2,6 @@ package noarray
 
 import (
 	"encoding/json"
-	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
@@ -20,10 +19,10 @@ import (
 //
 // See tests and repo readme for examples.
 func UnmarshalAsObject(data []byte, v interface{}) error {
-	var rawSlice []interface{}
+	var rawMessages []json.RawMessage
 	var err error
 
-	if err = json.Unmarshal(data, &rawSlice); err != nil {
+	if err = json.Unmarshal(data, &rawMessages); err != nil {
 		return err
 	}
 
@@ -38,17 +37,12 @@ func UnmarshalAsObject(data []byte, v interface{}) error {
 			return err
 		}
 
-		if sliceIndex >= len(rawSlice) {
+		if sliceIndex >= len(rawMessages) {
 			// prevent index out of range
 			continue
 		}
 
-		var fieldBytes []byte
-		if fieldBytes, err = json.Marshal(rawSlice[sliceIndex]); err != nil {
-			return fmt.Errorf("remarshalling at offset %d: %w", i, err)
-		}
-
-		if err = json.Unmarshal(fieldBytes, x.Field(i).Addr().Interface()); err != nil {
+		if err = json.Unmarshal(rawMessages[i], x.Field(i).Addr().Interface()); err != nil {
 			return err
 		}
 
