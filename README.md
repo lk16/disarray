@@ -1,8 +1,6 @@
-# No Array
+# Disarray
 
-This module exports one function with one task:
-
-to parse JSON messages that have an array as root into a golang struct.
+This module allows parsing JSON array messages into a struct.
 
 Especially those with different types in the array. This gets particularly hairy for complex JSON structures.
 
@@ -17,7 +15,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/lk16/noarray"
+	"github.com/lk16/disarray"
 )
 
 type foo struct {
@@ -30,7 +28,7 @@ func main() {
     input := []byte(`["foo",123.4,"bar"]`)
 
     var output foo
-    err := noarray.UnmarshalAsObject(input, &output)
+    err := disarray.UnmarshalAsObject(input, &output)
 
     if err != nil {
         panic(err.Error())

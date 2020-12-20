@@ -1,4 +1,4 @@
-package noarray
+package disarray
 
 import (
 	"encoding/json"

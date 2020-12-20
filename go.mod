@@ -1,4 +1,4 @@
-module github.com/lk16/noarray
+module github.com/lk16/disarray
 
 go 1.15
 
