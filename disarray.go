@@ -8,16 +8,25 @@ import (
 )
 
 // UnmarshalAsObject unmarshals JSON array data into a golang struct.
-// This is useful when attempting to unmarshal a JSON message
-// that has a JSON array as root.
 //
 // JSON data that is invalid or does not contain a JSON array will
 // cause an error to be returned
 //
-// This function does not affect slices that are not at the
-// root of the parsed data.
+// This function only affects the JSON array at JSON top level.
 //
-// See tests and repo readme for examples.
+// Use tags like this to indicate which JSON array item should be
+// unmarshaled for a field.
+//  type foo struct {
+//  	Zero string  `json:"0"`
+//  	One  float64 `json:"1"`
+//  	Two  string  `json:"2"`
+//  }
+//
+// This function is most useful when called from UnmarshalJSON:
+//  func (foo *foo) UnmarshalJSON(bytes []byte) error {
+//  	return disarray.UnmarshalAsObject(bytes, foo)
+//  }
+//
 func UnmarshalAsObject(data []byte, v interface{}) error {
 	var rawMessages []json.RawMessage
 	var err error
