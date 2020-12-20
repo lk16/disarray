@@ -15,7 +15,7 @@ import (
 // This function only affects the JSON array at JSON top level.
 //
 // Use tags like this to indicate which JSON array item should be
-// unmarshaled for a field.
+// unmarshalled for a field.
 //  type foo struct {
 //  	Zero string  `json:"0"`
 //  	One  float64 `json:"1"`
