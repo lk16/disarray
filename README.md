@@ -1,40 +1,42 @@
 # Disarray
 
-This module allows parsing JSON array messages into a struct.
+Unmarshal JSON arrays into a struct.
 
-Especially those with different types in the array. This gets particularly hairy for complex JSON structures.
-
-I implemented this (hacky) module, because the standard library doesn't support this.
-
+### Why?
+* The Standard library doesn't support this
+* Writing a custom `UnmarshalJSON()` for every array of some APIs object got tedious
+* This seems reusable by many.
 
 ### Example
 
+Full example is [here](example/main.go).
+
 ```go
-package main
-
-import (
-	"fmt"
-
-	"github.com/lk16/disarray"
-)
-
 type foo struct {
 	Zero string  `json:"0"`
 	One  float64 `json:"1"`
 	Two  string  `json:"2"`
 }
 
+func (foo *foo) UnmarshalJSON(bytes []byte) error {
+	return disarray.UnmarshalAsObject(bytes, foo)
+}
+
 func main() {
-    input := []byte(`["foo",123.4,"bar"]`)
+	bytes := []byte(`["foo",123.4,"bar"]`)
 
-    var output foo
-    err := disarray.UnmarshalAsObject(input, &output)
-
-    if err != nil {
-        panic(err.Error())
-    }
-
-    // prints: output = foo{Zero: "foo", One: 123.4, Two: "bar"}
-    fmt.Printf("output = %+#v\n", output)
+	var foo foo
+    err := json.Unmarshal(bytes, &foo)
+    // ...
 }
 ```
+
+### Discussion
+
+Pros:
+* This integrates nicely with existing code and nested JSON arrays.
+* The tags used with indexes look clean
+
+Cons:
+* You need to implement a 3-line `UnmarshalJSON` for every JSON array model
+* This could be supported by the standard library directly.
